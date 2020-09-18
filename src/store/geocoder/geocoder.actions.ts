@@ -1,5 +1,5 @@
 import { ActionType, createCustomAction } from 'typesafe-actions';
-import { CityData } from '../store.types';
+import { GeocoderReducerState } from './geocoder.types';
 
 export const searchCity = createCustomAction(
   'Search city',
@@ -8,17 +8,14 @@ export const searchCity = createCustomAction(
 
 export const searchCityRequestSuccess = createCustomAction(
   'Search city request success',
-  (cityData: CityData) => ({
+  (cityData: GeocoderReducerState) => ({
     cityData,
   }),
 );
 
-export const searchCityRequestFail = createCustomAction(
-  'Search city request failed',
-  (error: string) => ({ error }),
-);
+export const searchCityRequestFailed = createCustomAction('Search city request failed');
 
 export type GeocoderActionsAll = ActionType<typeof searchCity
 | typeof searchCityRequestSuccess
-| typeof searchCityRequestFail
+| typeof searchCityRequestFailed
 >;

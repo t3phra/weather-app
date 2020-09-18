@@ -4,9 +4,9 @@ import {
 import createSagaMiddleware from 'redux-saga';
 
 import geocoderReducer from './geocoder/geocoder.reducer';
-import cityReducer from './city/city.reducer';
+import citiesReducer from './cities/cities.reducer';
 import searchCitiesSagaWatcher from './geocoder/geocoder.sagas';
-import getWeatherSagaWatcher from './city/city.sagas';
+import getWeatherSagaWatcher from './cities/cities.sagas';
 
 declare global {
   interface Window {
@@ -20,7 +20,7 @@ const composeEnhancers = (process.env.NODE_ENV === 'development'
 
 const mainReducer = combineReducers({
   geocoder: geocoderReducer,
-  city: cityReducer,
+  cities: citiesReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

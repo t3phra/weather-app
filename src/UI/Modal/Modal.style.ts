@@ -12,8 +12,11 @@ export const Backdrop = styled.div`
 
 export const ModalWindow = styled.div`
   background-color: white;
-  width: 400px;
-  height: 380px;
+  width: 380px;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 30px;
+  border-radius: 10px;
   position: fixed;
   z-index: 3;
   display: flex;
@@ -22,4 +25,6 @@ export const ModalWindow = styled.div`
   justify-content: space-evenly;
   transform: translateY(-50%);
   top: 50vh;
+  color: #412c63;
+  font-size: 1.1rem;
 `;

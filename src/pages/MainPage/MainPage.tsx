@@ -2,76 +2,110 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
+import Modal from '../../UI/Modal/Modal';
 import WeatherCard from '../../components/WeatherCard/WeatherCard';
-import {
-  Content, Title, Date, Input, AddBtn,
-} from './MainPage.style';
-import { getWeather } from '../../store/city/city.actions';
-import { selectLocation } from '../../store/geocoder/geocoder.selectors';
-import { selectTemperature, selectWeatherId } from '../../store/city/city.selectors';
+import AddNewCity from '../../components/AddNewCity/AddNewCity';
+import { INPUT_PLACEHOLDER, DATE_TEMPLATE } from '../../constants/constants';
 import { searchCity } from '../../store/geocoder/geocoder.actions';
+import { addNewCity, removeCity } from '../../store/cities/cities.actions';
+import { selectLocation } from '../../store/geocoder/geocoder.selectors';
+import { selectCities } from '../../store/cities/cities.selectors';
+import {
+  Content,
+  Title,
+  Date,
+  Input,
+  CardsContainer,
+  AddBtn,
+} from './MainPage.style';
 
 const MainPage: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const location = useSelector(selectLocation);
-  const temperature = useSelector(selectTemperature);
-  const weatherId = useSelector(selectWeatherId);
+  const cities = useSelector(selectCities);
 
-  const date = dayjs().format('MMMM D, YYYY');
+  const date = dayjs().format(DATE_TEMPLATE);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        dispatch(getWeather(position.coords.latitude, position.coords.longitude));
-      },
-      (error) => {
-        console.error(`Error ${error.code}: ${error.message}`);
-      },
-    );
-  }, []);
-
-  const addCityHandler = () => {
-    if (inputValue.trim()) {
-      dispatch(searchCity(inputValue));
-      dispatch(getWeather(location.latitude, location.longitude));
-    }
+  const searchCityHandler = () => {
+    dispatch(searchCity(inputValue));
+    setIsModalOpen(true);
   };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    setInputValue(event.target.value.trimLeft());
   };
 
   const keyPressedHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      addCityHandler();
+      searchCityHandler();
     }
+  };
+
+  const closeModalHandler = () => {
+    setIsModalOpen(false);
+  };
+
+  const addCityHandler = () => {
+    dispatch(addNewCity({
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      city: location.city,
+      cityId: location.cityId,
+      country: location.country,
+    }));
+    setIsModalOpen(false);
+  };
+
+  const removeCityHandler = (cityId: number) => {
+    dispatch(removeCity(cityId));
   };
 
   return (
     <Content>
+      { isModalOpen
+        && (
+        <Modal
+          onCloseModal={closeModalHandler}
+        >
+          <AddNewCity
+            city={location.city}
+            onCloseModal={closeModalHandler}
+            onAddCity={addCityHandler}
+          />
+        </Modal>
+        )}
       <Date>{date}</Date>
       <Title>Current Weather</Title>
       <div>
         <Input
-          placeholder="Enter the name of the city..."
+          placeholder={INPUT_PLACEHOLDER}
           value={inputValue}
           onChange={(event) => inputChangeHandler(event)}
           onKeyPress={(event) => keyPressedHandler(event)}
         />
         <AddBtn
-          onClick={addCityHandler}
+          onClick={searchCityHandler}
         >
           +
         </AddBtn>
       </div>
-      <WeatherCard
-        city={location.city}
-        country={location.country}
-        temperature={temperature}
-        weatherId={weatherId}
-      />
+      <CardsContainer>
+        {cities.map((cityData) => (
+          <WeatherCard
+            key={cityData.cityId}
+            city={cityData.city}
+            country={cityData.country}
+            temperature={cityData.weather?.temperature || 0}
+            weatherId={cityData.weather?.weatherId || 0}
+            onRemoveCity={() => removeCityHandler(cityData.cityId)}
+          />
+        ))}
+      </CardsContainer>
     </Content>
   );
 };

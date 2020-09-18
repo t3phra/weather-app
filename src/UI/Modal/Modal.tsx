@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Backdrop, ModalWindow } from './Modal.style';
 
-const Modal: React.FC = () => (
+interface ModalProps {
+  onCloseModal: () => void
+  children: ReactNode | ReactNode[]
+}
+
+const Modal: React.FC<ModalProps> = ({ onCloseModal, children }) => (
   <>
-    <Backdrop />
-    <ModalWindow />
+    <Backdrop onClick={onCloseModal} />
+    <ModalWindow>
+      {children}
+    </ModalWindow>
   </>
 );
 

@@ -23,7 +23,7 @@ export const Title = styled.h2`
 `;
 
 export const Input = styled.input`
-  width: 370px;
+  width: 250px;
   height: 35px;
   margin-bottom: 50px;
   padding: 0 15px;
@@ -60,4 +60,12 @@ export const AddBtn = styled.button`
   &:active {
     background-color: #6a8594;
   }
+`;
+
+export const CardsContainer = styled.div`
+  max-width: 70vw;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;

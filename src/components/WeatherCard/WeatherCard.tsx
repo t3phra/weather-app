@@ -9,13 +9,14 @@ interface WeatherCardProps {
   country: string
   temperature: number
   weatherId: number
+  onRemoveCity: () => void
 }
 
 const WeatherCard: React.FC<WeatherCardProps> = ({
-  weatherId, temperature, city, country,
+  weatherId, temperature, city, country, onRemoveCity,
 }) => (
   <Card>
-    <DeleteCardBtn>x</DeleteCardBtn>
+    <DeleteCardBtn onClick={() => onRemoveCity()}>x</DeleteCardBtn>
     <i className={`owf owf-${weatherId} owf-5x`} style={{ color: '#412c63' }} />
     <Temperature>
       {temperature}

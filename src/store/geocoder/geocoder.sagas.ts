@@ -1,24 +1,33 @@
 import { takeLatest, put, delay } from 'redux-saga/effects';
 import axios from 'axios';
 
-import { searchCity, searchCityRequestFail, searchCityRequestSuccess } from './geocoder.actions';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
+
+import { searchCity, searchCityRequestFailed, searchCityRequestSuccess } from './geocoder.actions';
+import { setErrorMessage, setLoadingStatus } from '../async-status/async-status.actions';
 
 function* searchCitiesSaga(action: ReturnType<typeof searchCity>) {
   yield delay(300);
+  yield put(setLoadingStatus(true));
   try {
     const response = yield axios.get(
       `/get_geocoder_data?address=${action.city}`,
     );
     const cityData = {
       city: response.data.address_data.city,
+      cityId: uuidv4(),
       country: response.data.address_data.country,
       latitude: response.data.lat,
       longitude: response.data.lng,
     };
     yield put(searchCityRequestSuccess(cityData));
   } catch (error) {
-    yield put(searchCityRequestFail(error.message));
+    yield put(searchCityRequestFailed());
+    yield put(setErrorMessage(error.message));
   }
+  yield put(setLoadingStatus(false));
 }
 
 export default function* searchCitiesSagaWatcher() {
