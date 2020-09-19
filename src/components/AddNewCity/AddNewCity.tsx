@@ -16,7 +16,7 @@ const AddNewCity:React.FC<AddNewCityProps> = ({ city, onAddCity, onCloseModal })
       ? `Add ${city} to your cities?`
       : SEARCH_CITY_ERROR_MESSAGE }
     <BtnContainer>
-      { city !== ''
+      { city
         ? (
           <>
             <Button btnType="submit" clicked={onAddCity}>Add</Button>

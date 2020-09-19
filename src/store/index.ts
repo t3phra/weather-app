@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import geocoderReducer from './geocoder/geocoder.reducer';
 import citiesReducer from './cities/cities.reducer';
+import asyncStatusReducer from './async-status/async-status.reducer';
 import searchCitiesSagaWatcher from './geocoder/geocoder.sagas';
 import getWeatherSagaWatcher from './cities/cities.sagas';
 
@@ -21,6 +22,7 @@ const composeEnhancers = (process.env.NODE_ENV === 'development'
 const mainReducer = combineReducers({
   geocoder: geocoderReducer,
   cities: citiesReducer,
+  asyncStatus: asyncStatusReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

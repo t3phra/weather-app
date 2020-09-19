@@ -6,10 +6,11 @@ import Modal from '../../UI/Modal/Modal';
 import WeatherCard from '../../components/WeatherCard/WeatherCard';
 import AddNewCity from '../../components/AddNewCity/AddNewCity';
 import { INPUT_PLACEHOLDER, DATE_TEMPLATE } from '../../constants/constants';
-import { searchCity } from '../../store/geocoder/geocoder.actions';
+import { searchCity, clearSearchCityData } from '../../store/geocoder/geocoder.actions';
 import { addNewCity, removeCity } from '../../store/cities/cities.actions';
 import { selectLocation } from '../../store/geocoder/geocoder.selectors';
 import { selectCities } from '../../store/cities/cities.selectors';
+import { selectIsLoading } from '../../store/async-status/async-status.selectors';
 import {
   Content,
   Title,
@@ -26,6 +27,7 @@ const MainPage: React.FC = () => {
 
   const location = useSelector(selectLocation);
   const cities = useSelector(selectCities);
+  const isLoading = useSelector(selectIsLoading);
 
   const date = dayjs().format(DATE_TEMPLATE);
 
@@ -45,6 +47,7 @@ const MainPage: React.FC = () => {
   };
 
   const closeModalHandler = () => {
+    setInputValue('');
     setIsModalOpen(false);
   };
 
@@ -58,7 +61,9 @@ const MainPage: React.FC = () => {
       cityId: location.cityId,
       country: location.country,
     }));
+    setInputValue('');
     setIsModalOpen(false);
+    dispatch(clearSearchCityData());
   };
 
   const removeCityHandler = (cityId: number) => {
@@ -71,6 +76,7 @@ const MainPage: React.FC = () => {
         && (
         <Modal
           onCloseModal={closeModalHandler}
+          isLoading={isLoading}
         >
           <AddNewCity
             city={location.city}

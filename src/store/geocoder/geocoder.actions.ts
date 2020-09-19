@@ -15,7 +15,10 @@ export const searchCityRequestSuccess = createCustomAction(
 
 export const searchCityRequestFailed = createCustomAction('Search city request failed');
 
+export const clearSearchCityData = createCustomAction('Clear search city data');
+
 export type GeocoderActionsAll = ActionType<typeof searchCity
 | typeof searchCityRequestSuccess
 | typeof searchCityRequestFailed
+| typeof clearSearchCityData
 >;

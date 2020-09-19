@@ -1,6 +1,7 @@
 import { createReducer } from 'typesafe-actions';
 import { GeocoderReducerState } from './geocoder.types';
 import {
+  clearSearchCityData,
   GeocoderActionsAll,
   searchCityRequestSuccess,
 } from './geocoder.actions';
@@ -21,6 +22,13 @@ const geocoderReducer = createReducer<GeocoderReducerState, GeocoderActionsAll>(
     country: action.cityData.country,
     latitude: action.cityData.latitude,
     longitude: action.cityData.longitude,
+  }))
+  .handleAction(clearSearchCityData, (state, action) => ({
+    city: '',
+    cityId: 0,
+    country: '',
+    latitude: 0,
+    longitude: 0,
   }));
 
 export default geocoderReducer;
