@@ -1,5 +1,5 @@
 import { ActionType, createCustomAction } from 'typesafe-actions';
-import { WeatherData, CityData } from './cities.types';
+import { CityData, WeatherData } from './cities.types';
 
 export const addNewCity = createCustomAction(
   'Add new city',

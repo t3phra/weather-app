@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Content = styled.div`
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   width: 100vw;
   background-color: #e7ebef;
   display: flex;
@@ -21,6 +22,8 @@ export const Title = styled.h2`
   color: #412c63;
   font-size: 2.5rem;
 `;
+
+export const InputContainer = styled.div``;
 
 export const Input = styled.input`
   width: 250px;

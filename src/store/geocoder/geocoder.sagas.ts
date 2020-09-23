@@ -1,4 +1,4 @@
-import { takeLatest, put } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -6,7 +6,11 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  clearSearchCityData, searchCity, searchCityRequestFailed, searchCityRequestSuccess, setGeoModalStatus,
+  clearSearchCityData,
+  searchCity,
+  searchCityRequestFailed,
+  searchCityRequestSuccess,
+  setGeoModalStatus,
 } from './geocoder.actions';
 import { setErrorMessage, setLoadingStatus } from '../async-status/async-status.actions';
 
@@ -22,8 +26,10 @@ function* searchCitiesSaga(action: ReturnType<typeof searchCity>) {
       city: response.data.address_data.city,
       cityId: uuidv4(),
       country: response.data.address_data.country,
-      latitude: response.data.lat,
-      longitude: response.data.lng,
+      location: {
+        latitude: response.data.lat,
+        longitude: response.data.lng,
+      },
     };
     yield put(searchCityRequestSuccess(cityData));
   } catch (error) {

@@ -1,4 +1,4 @@
-import { createCustomAction, ActionType } from 'typesafe-actions';
+import { ActionType, createCustomAction } from 'typesafe-actions';
 
 export const setLoadingStatus = createCustomAction('Set loading status', (isLoading: boolean) => ({ isLoading }));
 

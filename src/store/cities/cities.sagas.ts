@@ -1,5 +1,5 @@
 import {
-  takeLatest, put, select, all,
+  all, put, select, takeLatest,
 } from 'redux-saga/effects';
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ function* getWeatherSaga() {
     const responses = yield all(
       cities.map((city) => axios.get(
         `https://api.openweathermap.org/data/2.5/onecall?lat=${city.location.latitude}&lon=${city.location.longitude}&
-exclude=hourly,daily&appid=d5bbf1bfba591ace18401e96f35eedeb`,
+exclude=hourly,daily&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
       )),
     );
     const weatherData = responses.map((response: WeatherDataIncomingData, i: number) => ({

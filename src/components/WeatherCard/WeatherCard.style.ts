@@ -38,6 +38,10 @@ export const DeleteCardBtn = styled.button`
   }
 `;
 
+export const WeatherIcon = styled.i`
+  color: #412c63;
+`;
+
 export const Temperature = styled.div`
   color: #412c63;
   font-size: 3rem;

@@ -1,7 +1,7 @@
 import { createReducer } from 'typesafe-actions';
 import { CitiesReducerState } from './cities.types';
 import {
-  CitiesActionsAll, addNewCity, removeCity, getWeatherRequestSuccess,
+  addNewCity, CitiesActionsAll, getWeatherRequestSuccess, removeCity,
 } from './cities.actions';
 
 const initialState: CitiesReducerState = {

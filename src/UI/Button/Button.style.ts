@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Btn = styled.button`
+interface BtnProps {
+  btnType: string;
+}
+
+export const Btn = styled.button<BtnProps>`
   width: 80px;
   height: 40px;
   color: #fff;
@@ -9,36 +13,17 @@ export const Btn = styled.button`
   border: none;
   border-radius: 10px;
   margin-right: 15px;
+  background-color: ${(props) => (props.btnType === 'submit' ? '#7c9eb2' : '#412c63')};
   
-  &.submit {
-    background-color: #7c9eb2;
-    
-    &:hover {
-      background-color: #87b1c9;
-    }
-  
-    &:focus {
-      outline: none;
-    }
-  
-    &:active {
-      background-color: #6a8594;
-    }
+  &:focus {
+    outline: none;
   }
   
-  &.decline {
-    background-color: #412c63;
-    
-    &:hover {
-      background-color: #614391;
-    }
+  &:hover {
+    background-color: ${(props) => (props.btnType === 'submit' ? '#87b1c9' : '#614391')};
+  }  
   
-    &:focus {
-      outline: none;
-    }
-  
-    &:active {
-      background-color: #210E40;
-    }
+  &:active {
+    background-color: ${(props) => (props.btnType === 'submit' ? '#6a8594' : '#210E40')};
   }
 `;

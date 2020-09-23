@@ -8,9 +8,10 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  btnType, clicked, children,
+  btnType, clicked, children, ...other
 }) => (
-  <Btn className={btnType} onClick={clicked}>
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <Btn btnType={btnType} onClick={clicked} {...other}>
     {children}
   </Btn>
 );

@@ -1,9 +1,9 @@
 import { createReducer } from 'typesafe-actions';
 
 import { AsyncStatusReducerState } from './async-status.types';
-import { AsyncStatusActionsAll, setLoadingStatus, setErrorMessage } from './async-status.actions';
+import { AsyncStatusActionsAll, setErrorMessage, setLoadingStatus } from './async-status.actions';
 
-const InitialState: AsyncStatusReducerState = {
+const initialState: AsyncStatusReducerState = {
   isLoading: false,
   error: '',
 };
@@ -11,7 +11,7 @@ const InitialState: AsyncStatusReducerState = {
 const AsyncStatusReducer = createReducer<
 AsyncStatusReducerState,
 AsyncStatusActionsAll
->(InitialState)
+>(initialState)
   .handleAction(setLoadingStatus, (state, action) => ({
     ...state,
     isLoading: action.isLoading,

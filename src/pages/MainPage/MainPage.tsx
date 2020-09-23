@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 import Modal from '../../UI/Modal/Modal';
 import WeatherCard from '../../components/WeatherCard/WeatherCard';
 import AddNewCity from '../../components/AddNewCity/AddNewCity';
-import { INPUT_PLACEHOLDER, DATE_TEMPLATE } from '../../constants/constants';
+import { DATE_TEMPLATE, INPUT_PLACEHOLDER } from '../../constants/constants';
 import { searchCity, setGeoModalStatus } from '../../store/geocoder/geocoder.actions';
 import { addNewCity, removeCity } from '../../store/cities/cities.actions';
 import { selectIsGeoModalOpen, selectLocation } from '../../store/geocoder/geocoder.selectors';
 import { selectCities } from '../../store/cities/cities.selectors';
 import { selectIsLoading } from '../../store/async-status/async-status.selectors';
 import {
-  Content,
-  Title,
-  Date,
-  Input,
-  CardsContainer,
-  AddBtn,
+  AddBtn, CardsContainer, Content, Date, Input, InputContainer, Title,
 } from './MainPage.style';
 
 const MainPage: React.FC = () => {
@@ -49,15 +44,7 @@ const MainPage: React.FC = () => {
   };
 
   const addCityHandler = () => {
-    dispatch(addNewCity({
-      location: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      },
-      city: location.city,
-      cityId: location.cityId,
-      country: location.country,
-    }));
+    dispatch(addNewCity(location));
     setInputValue('');
     dispatch(setGeoModalStatus(false));
   };
@@ -66,34 +53,30 @@ const MainPage: React.FC = () => {
 
   return (
     <Content>
-      { isGeoModalOpen
-        && (
-        <Modal
+      <Modal
+        show={isGeoModalOpen}
+        onCloseModal={closeModalHandler}
+        isLoading={isLoading}
+      >
+        <AddNewCity
+          city={location.city}
           onCloseModal={closeModalHandler}
-          isLoading={isLoading}
-        >
-          <AddNewCity
-            city={location.city}
-            onCloseModal={closeModalHandler}
-            onAddCity={addCityHandler}
-          />
-        </Modal>
-        )}
+          onAddCity={addCityHandler}
+        />
+      </Modal>
       <Date>{date}</Date>
       <Title>Current Weather</Title>
-      <div>
+      <InputContainer>
         <Input
           placeholder={INPUT_PLACEHOLDER}
           value={inputValue}
           onChange={(event) => inputChangeHandler(event)}
           onKeyPress={(event) => keyPressedHandler(event)}
         />
-        <AddBtn
-          onClick={searchCityHandler}
-        >
+        <AddBtn onClick={searchCityHandler}>
           +
         </AddBtn>
-      </div>
+      </InputContainer>
       <CardsContainer>
         {cities.map((cityData) => (
           <WeatherCard
