@@ -6,9 +6,9 @@ import Modal from '../../UI/Modal/Modal';
 import WeatherCard from '../../components/WeatherCard/WeatherCard';
 import AddNewCity from '../../components/AddNewCity/AddNewCity';
 import { INPUT_PLACEHOLDER, DATE_TEMPLATE } from '../../constants/constants';
-import { searchCity, clearSearchCityData } from '../../store/geocoder/geocoder.actions';
+import { searchCity, setGeoModalStatus } from '../../store/geocoder/geocoder.actions';
 import { addNewCity, removeCity } from '../../store/cities/cities.actions';
-import { selectLocation } from '../../store/geocoder/geocoder.selectors';
+import { selectIsGeoModalOpen, selectLocation } from '../../store/geocoder/geocoder.selectors';
 import { selectCities } from '../../store/cities/cities.selectors';
 import { selectIsLoading } from '../../store/async-status/async-status.selectors';
 import {
@@ -22,19 +22,16 @@ import {
 
 const MainPage: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const location = useSelector(selectLocation);
   const cities = useSelector(selectCities);
+  const isGeoModalOpen = useSelector(selectIsGeoModalOpen);
   const isLoading = useSelector(selectIsLoading);
 
   const date = dayjs().format(DATE_TEMPLATE);
 
-  const searchCityHandler = () => {
-    dispatch(searchCity(inputValue));
-    setIsModalOpen(true);
-  };
+  const searchCityHandler = () => dispatch(searchCity(inputValue));
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value.trimLeft());
@@ -48,7 +45,7 @@ const MainPage: React.FC = () => {
 
   const closeModalHandler = () => {
     setInputValue('');
-    setIsModalOpen(false);
+    dispatch(setGeoModalStatus(false));
   };
 
   const addCityHandler = () => {
@@ -62,17 +59,14 @@ const MainPage: React.FC = () => {
       country: location.country,
     }));
     setInputValue('');
-    setIsModalOpen(false);
-    dispatch(clearSearchCityData());
+    dispatch(setGeoModalStatus(false));
   };
 
-  const removeCityHandler = (cityId: number) => {
-    dispatch(removeCity(cityId));
-  };
+  const removeCityHandler = (cityId: number) => dispatch(removeCity(cityId));
 
   return (
     <Content>
-      { isModalOpen
+      { isGeoModalOpen
         && (
         <Modal
           onCloseModal={closeModalHandler}

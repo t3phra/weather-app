@@ -7,3 +7,5 @@ export const selectLocation = (state: ReduxState) => ({
   latitude: state.geocoder.latitude,
   longitude: state.geocoder.longitude,
 });
+
+export const selectIsGeoModalOpen = (state: ReduxState) => state.geocoder.isGeoModalOpen;

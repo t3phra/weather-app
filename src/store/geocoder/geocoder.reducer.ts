@@ -3,7 +3,7 @@ import { GeocoderReducerState } from './geocoder.types';
 import {
   clearSearchCityData,
   GeocoderActionsAll,
-  searchCityRequestSuccess,
+  searchCityRequestSuccess, setGeoModalStatus,
 } from './geocoder.actions';
 
 const initialState: GeocoderReducerState = {
@@ -12,6 +12,7 @@ const initialState: GeocoderReducerState = {
   country: '',
   latitude: 0,
   longitude: 0,
+  isGeoModalOpen: false,
 };
 
 const geocoderReducer = createReducer<GeocoderReducerState, GeocoderActionsAll>(initialState)
@@ -24,11 +25,12 @@ const geocoderReducer = createReducer<GeocoderReducerState, GeocoderActionsAll>(
     longitude: action.cityData.longitude,
   }))
   .handleAction(clearSearchCityData, (state, action) => ({
-    city: '',
-    cityId: 0,
-    country: '',
-    latitude: 0,
-    longitude: 0,
+    ...initialState,
+    isGeoModalOpen: state.isGeoModalOpen,
+  }))
+  .handleAction(setGeoModalStatus, (state, action) => ({
+    ...state,
+    isGeoModalOpen: action.isGeoModalOpen,
   }));
 
 export default geocoderReducer;
