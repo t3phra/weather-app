@@ -1,5 +1,14 @@
 import { ActionType, createCustomAction } from 'typesafe-actions';
-import { CityData, WeatherData } from './cities.types';
+import { CitiesState, CityData, WeatherData } from './cities.types';
+
+export const hydrateCities = createCustomAction(
+  'Hydrate cities',
+);
+
+export const hydrateCitiesSuccess = createCustomAction(
+  'Hydrate cities success',
+  (cities: CitiesState) => ({ cities }),
+);
 
 export const addNewCity = createCustomAction(
   'Add new city',
@@ -22,7 +31,9 @@ export const getWeatherRequestSuccess = createCustomAction(
 
 export const getWeatherRequestFailed = createCustomAction('Get weather request failed');
 
-export type CitiesActionsAll = ActionType<typeof addNewCity
+export type CitiesActionsAll = ActionType<typeof hydrateCities
+| typeof hydrateCitiesSuccess
+| typeof addNewCity
 | typeof removeCity
 | typeof getWeather
 | typeof getWeatherRequestSuccess

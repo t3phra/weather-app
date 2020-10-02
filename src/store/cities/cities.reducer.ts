@@ -1,7 +1,11 @@
 import { createReducer } from 'typesafe-actions';
 import { CitiesReducerState } from './cities.types';
 import {
-  addNewCity, CitiesActionsAll, getWeatherRequestSuccess, removeCity,
+  addNewCity,
+  CitiesActionsAll,
+  getWeatherRequestSuccess,
+  hydrateCitiesSuccess,
+  removeCity,
 } from './cities.actions';
 
 const initialState: CitiesReducerState = {
@@ -9,6 +13,10 @@ const initialState: CitiesReducerState = {
 };
 
 const citiesReducer = createReducer<CitiesReducerState, CitiesActionsAll>(initialState)
+  .handleAction(hydrateCitiesSuccess, (state, action) => ({
+    ...state,
+    cities: action.cities,
+  }))
   .handleAction(addNewCity, (state, action) => ({
     ...state,
     cities: {
@@ -16,10 +24,16 @@ const citiesReducer = createReducer<CitiesReducerState, CitiesActionsAll>(initia
       [action.city.cityId]: action.city,
     },
   }))
-  .handleAction(removeCity, (state, action) => ({
-    ...state,
-    cities: Object.values(state.cities).filter((city) => city.cityId !== action.cityId),
-  }))
+  .handleAction(removeCity, (state, action) => {
+    const newState = {
+      ...state,
+      cities: {
+        ...state.cities,
+      },
+    };
+    delete newState.cities[action.cityId];
+    return newState;
+  })
   .handleAction(getWeatherRequestSuccess, (state, action) => {
     const enhancedCities = { ...state.cities };
     action.weatherData.forEach((data) => {

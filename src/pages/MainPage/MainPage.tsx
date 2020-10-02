@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
 
 import Modal from '../../UI/Modal/Modal';
 import WeatherCard from '../../components/WeatherCard/WeatherCard';
 import AddNewCity from '../../components/AddNewCity/AddNewCity';
-import { DATE_TEMPLATE, INPUT_PLACEHOLDER } from '../../constants/constants';
+import { INPUT_PLACEHOLDER } from '../../constants/constants';
 import { searchCity, setGeoModalStatus } from '../../store/geocoder/geocoder.actions';
-import { addNewCity, removeCity } from '../../store/cities/cities.actions';
+import { addNewCity, hydrateCities, removeCity } from '../../store/cities/cities.actions';
 import { selectIsGeoModalOpen, selectLocation } from '../../store/geocoder/geocoder.selectors';
 import { selectCities } from '../../store/cities/cities.selectors';
 import { selectIsLoading } from '../../store/async-status/async-status.selectors';
 import {
   AddBtn, CardsContainer, Content, Date, Input, InputContainer, Title,
 } from './MainPage.style';
+import { useClock } from '../../hooks/useClock';
 
 const MainPage: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -24,32 +24,40 @@ const MainPage: React.FC = () => {
   const isGeoModalOpen = useSelector(selectIsGeoModalOpen);
   const isLoading = useSelector(selectIsLoading);
 
-  const date = dayjs().format(DATE_TEMPLATE);
+  const date = useClock();
 
-  const searchCityHandler = () => dispatch(searchCity(inputValue));
+  useEffect(() => {
+    dispatch(hydrateCities());
+  }, []);
 
-  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const searchCityHandler = useCallback(
+    () => dispatch(searchCity(inputValue)), [dispatch, inputValue],
+  );
+
+  const inputChangeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value.trimLeft());
-  };
+  }, [setInputValue]);
 
-  const keyPressedHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const keyPressedHandler = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       searchCityHandler();
     }
-  };
+  }, [searchCityHandler]);
 
-  const closeModalHandler = () => {
+  const closeModalHandler = useCallback(() => {
     setInputValue('');
     dispatch(setGeoModalStatus(false));
-  };
+  }, [setInputValue, dispatch]);
 
-  const addCityHandler = () => {
+  const addCityHandler = useCallback(() => {
     dispatch(addNewCity(location));
     setInputValue('');
     dispatch(setGeoModalStatus(false));
-  };
+  }, [location, setInputValue, dispatch]);
 
-  const removeCityHandler = (cityId: number) => dispatch(removeCity(cityId));
+  const removeCityHandler = useCallback(
+    (cityId: number) => dispatch(removeCity(cityId)), [dispatch],
+  );
 
   return (
     <Content>

@@ -26,8 +26,10 @@ export interface CityData {
   weather?: WeatherData
 }
 
+export interface CitiesState {
+  [cityId: number]: CityData
+}
+
 export interface CitiesReducerState {
-  cities: {
-    [cityId: number]: CityData
-  }
+  cities: CitiesState
 }

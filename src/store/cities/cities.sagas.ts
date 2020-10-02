@@ -1,13 +1,19 @@
 import {
-  all, put, select, takeLatest,
+  all, call, put, select, takeLatest, takeLeading,
 } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
-  addNewCity, getWeather, getWeatherRequestFailed, getWeatherRequestSuccess,
+  addNewCity,
+  getWeather,
+  getWeatherRequestFailed,
+  getWeatherRequestSuccess,
+  hydrateCities,
+  hydrateCitiesSuccess,
+  removeCity,
 } from './cities.actions';
 import { setErrorMessage, setLoadingStatus } from '../async-status/async-status.actions';
-import { selectCities } from './cities.selectors';
+import { selectCities, selectCityData } from './cities.selectors';
 import { CityData, WeatherData, WeatherDataIncomingData } from './cities.types';
 
 function* getWeatherSaga() {
@@ -33,6 +39,25 @@ exclude=hourly,daily&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
   yield put(setLoadingStatus(false));
 }
 
+function* setCitiesToLS() {
+  const cities = { ...(yield select(selectCityData)) };
+  (Object.values(cities) as CityData[]).forEach((city) => {
+    // eslint-disable-next-line no-param-reassign
+    delete city.weather;
+  });
+  yield call([localStorage, 'setItem'], 'cities', JSON.stringify(cities));
+}
+
+function* handleHydrateCities() {
+  const cities = yield call([localStorage, 'getItem'], 'cities');
+  if (cities) {
+    const parsedCities = JSON.parse(cities);
+    yield put(hydrateCitiesSuccess(parsedCities));
+  }
+}
+
 export default function* getWeatherSagaWatcher() {
-  yield takeLatest([getWeather, addNewCity], getWeatherSaga);
+  yield takeLeading([getWeather, addNewCity, hydrateCitiesSuccess, removeCity], getWeatherSaga);
+  yield takeLatest([addNewCity, removeCity], setCitiesToLS);
+  yield takeLatest(hydrateCities, handleHydrateCities);
 }

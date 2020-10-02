@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Loader from '../../UI/Loader/Loader';
 import {
@@ -35,4 +35,4 @@ const WeatherCard: React.FC<WeatherCardProps> = ({
   </Card>
 );
 
-export default WeatherCard;
+export default memo(WeatherCard);
