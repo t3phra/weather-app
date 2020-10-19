@@ -15,12 +15,22 @@ export const Date = styled.h3`
   margin-top: 50px;
   color: #7c9eb2;
   font-size: 1.5rem;
+  
+  @media (max-width: 800px) {
+    margin-top: 30px;
+    font-size: 1.3rem;
+  }
 `;
 
 export const Title = styled.h2`
   margin: 0 0 50px;
   color: #412c63;
   font-size: 2.5rem;
+  
+  @media (max-width: 800px) {
+    margin: 0 0 35px;
+    font-size: 2rem;
+  }
 `;
 
 export const InputContainer = styled.div``;
@@ -38,6 +48,11 @@ export const Input = styled.input`
   
   &:focus {
     outline: none;
+  }
+  
+  @media (max-width: 800px) {
+    width: 200px;
+    margin-bottom: 25px;
   }
 `;
 
@@ -71,4 +86,8 @@ export const CardsContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  
+  @media (max-width: 800px) {
+    max-width: 90vw;
+  }
 `;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Button from '../../UI/Button/Button';
 import { SEARCH_CITY_ERROR_MESSAGE } from '../../constants/constants';
@@ -29,4 +29,4 @@ const AddNewCity:React.FC<AddNewCityProps> = ({ city, onAddCity, onCloseModal })
   </>
 );
 
-export default AddNewCity;
+export default memo(AddNewCity);

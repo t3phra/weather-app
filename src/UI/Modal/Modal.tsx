@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { memo, ReactNode } from 'react';
 
 import Loader from '../Loader/Loader';
 import { Backdrop, ModalWindow } from './Modal.style';
@@ -22,4 +22,4 @@ const Modal: React.FC<ModalProps> = ({
 ) : null
 );
 
-export default Modal;
+export default memo(Modal);

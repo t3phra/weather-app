@@ -12,6 +12,14 @@ export const Card = styled.div`
   flex-direction: column;
   justify-content: center; 
   align-items: center;
+  
+  @media (max-width: 800px) {
+    min-width: 280px;
+    height: 170px;
+    margin: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 export const DeleteCardBtn = styled.button`  
@@ -38,6 +46,13 @@ export const DeleteCardBtn = styled.button`
   }
 `;
 
+export const WeatherContainer = styled.div`
+  @media (max-width: 800px) {
+    width: 100px;
+    margin-left: 25px;
+  }
+`;
+
 export const WeatherIcon = styled.i`
   color: #412c63;
 `;
@@ -46,10 +61,20 @@ export const Temperature = styled.div`
   color: #412c63;
   font-size: 3rem;
   font-weight: bold;
+  
+  @media (max-width: 800px) {
+    font-size: 2rem;
+  }
 `;
 
 export const Location = styled.div`
   margin: 20px;
+  
+   @media (max-width: 800px) {
+    width: 180px;
+    font-size: 1.1rem;
+    margin-right: 25px;
+  }
 `;
 
 export const City = styled.h3`

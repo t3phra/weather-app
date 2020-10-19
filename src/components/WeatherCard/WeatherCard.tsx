@@ -2,7 +2,14 @@ import React, { memo } from 'react';
 
 import Loader from '../../UI/Loader/Loader';
 import {
-  Card, City, Country, DeleteCardBtn, Location, Temperature, WeatherIcon,
+  Card,
+  City,
+  Country,
+  DeleteCardBtn,
+  Location,
+  Temperature,
+  WeatherContainer,
+  WeatherIcon,
 } from './WeatherCard.style';
 
 interface WeatherCardProps {
@@ -19,14 +26,14 @@ const WeatherCard: React.FC<WeatherCardProps> = ({
   <Card>
     <DeleteCardBtn onClick={onRemoveCity}>x</DeleteCardBtn>
     { weatherId || temperature ? (
-      <>
+      <WeatherContainer>
         <WeatherIcon className={`owf owf-${weatherId} owf-5x`} />
         <Temperature>
           {temperature}
           {' '}
           °
         </Temperature>
-      </>
+      </WeatherContainer>
     ) : <Loader />}
     <Location>
       <City>{city}</City>

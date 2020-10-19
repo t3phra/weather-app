@@ -31,7 +31,7 @@ const MainPage: React.FC = () => {
   }, []);
 
   const searchCityHandler = useCallback(
-    () => dispatch(searchCity(inputValue)), [dispatch, inputValue],
+    () => dispatch(searchCity(inputValue)), [inputValue],
   );
 
   const inputChangeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,16 +47,16 @@ const MainPage: React.FC = () => {
   const closeModalHandler = useCallback(() => {
     setInputValue('');
     dispatch(setGeoModalStatus(false));
-  }, [setInputValue, dispatch]);
+  }, [setInputValue]);
 
   const addCityHandler = useCallback(() => {
     dispatch(addNewCity(location));
     setInputValue('');
     dispatch(setGeoModalStatus(false));
-  }, [location, setInputValue, dispatch]);
+  }, [location, setInputValue]);
 
   const removeCityHandler = useCallback(
-    (cityId: number) => dispatch(removeCity(cityId)), [dispatch],
+    (cityId: number) => dispatch(removeCity(cityId)), [],
   );
 
   return (

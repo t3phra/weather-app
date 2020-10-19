@@ -27,4 +27,9 @@ export const ModalWindow = styled.div`
   top: 50vh;
   color: #412c63;
   font-size: 1.1rem;
+  
+  @media (max-width: 800px) {
+    width: 100vw;
+    border-radius: 0;
+  }
 `;
